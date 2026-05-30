@@ -1,0 +1,7 @@
+# QUIN/Phomemo TP88 thermal stencil printer (USB 0483:5740)
+# Numbered 72 so it runs BEFORE 73-seat-late.rules (the uaccess builtin), and grants
+# access via the plugdev group (xecaz is a member) so it does not depend on uaccess
+# timing or a seat session.
+KERNEL=="lp[0-9]*", SUBSYSTEM=="usbmisc", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", GROUP="plugdev", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", GROUP="plugdev", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", GROUP="plugdev", MODE="0660", TAG+="uaccess"

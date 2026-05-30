@@ -1,0 +1,167 @@
+# Phomemo / QUIN TP88 — reverse-engineering project
+
+## Goal
+
+Understand the **QUIN TP88** thermal tattoo-stencil printer and decode the protocol it
+speaks over USB, so we can drive it ourselves (eventually from a custom **Android app**)
+and stop depending on the paywalled bundled app.
+
+This is a reverse-engineering / understanding project — **not** a CUPS/printer-setup task.
+
+## The device (established by read-only probing)
+
+- USB `0483:5740` (STMicro STM32 "Virtual COM Port" base descriptor), composite.
+  Manufacturer `QUIN`, product `TP88`, serial `000000140000`. It is a Phomemo TP88 /
+  M08F-class A4 tattoo printer (also rebadged Phomemo / LabelCreate / Zodzi).
+- Interfaces:
+  - `1-6:1.0` + `1-6:1.1` → CDC-ACM **virtual COM port** → `/dev/ttyACM0` (root:dialout).
+    Role unconfirmed — likely vendor diagnostic/config + firmware update. **Do not write
+    to it until characterized.**
+  - `1-6:1.2` → USB **printer class** (bInterfaceClass 07, bidirectional) → bound to the
+    `usblp` kernel driver → **`/dev/usb/lp0`** (root:lp). This is our print path.
+- IEEE-1284 device ID: `CMD:XPP,XL; MDL:TP88; CLS:PRINTER; DES:LABEL PRINTER`.
+  `XPP` = proprietary raster language (not ESC/POS/ZPL/PCL/PS).
+- Specs: 203 dpi, A4/Letter width, ~15 mm/s, thermal, USB + Bluetooth (PC = USB only).
+- The auto-created CUPS queue `TP88` is bound to "Generic Text-Only Printer" → cannot
+  rasterize images → **useless for stencils; ignore it.** We talk raster straight to the device.
+
+## Approach
+
+Reuse **TiMini-Print** (`github.com/Dejniel/TiMini-Print`, Python, Apache-2.0) — it already
+models M08F/TP88-class A4 tattoo printers (`protocol/families/luck_normal_a4.py` has a
+`PaperMode.TATTOO`). It drives printers over **Bluetooth (BLE/SPP via bleak), not USB**, so
+we reuse its render/encode/job-building layers and add a thin **USB transport** that writes
+the (transport-agnostic) job bytes to `/dev/usb/lp0`.
+
+Locked decisions: protocol source = reference + experiment; test prints = free (spare paper);
+device access = udev rule for `0483:5740`.
+
+## Repo layout / environment
+
+- `TiMini-Print/` — cloned upstream (Apache-2.0; preserve attribution).
+- `TiMini-Print/.venv/` — **all Python work happens in this venv.** Use `.venv/bin/python`
+  and `.venv/bin/pip`, never system Python.
+  - Installed: Pillow, pypdfium2, bleak, crc8, pyserial, pytest. **Skipped `python-lzo`**
+    (needs `liblzo2-dev`; only used by the unrelated `v5c` compressed-job family).
+  - Baseline: `383 passed` (`.venv/bin/python -m pytest -q`).
+- Plan: `~/.claude/plans/i-have-a-usb-deep-quokka.md`.
+
+### Key TiMini-Print files for us
+- `timiniprint/data/printer_profiles.json`, `data/printer_detection_rules.json` — model→profile.
+- `timiniprint/protocol/families/luck_normal_a4.py`, `luck_normal_core.py` — A4 tattoo recipes.
+- `timiniprint/protocol/{commands,encoding,job}.py`, `timiniprint/raster.py` — byte-level job.
+- `timiniprint/transport/` — transport interface (we add a USB backend here).
+- `tests/fixtures/protocol_golden.json` — byte-level oracle to diff our output against.
+
+## Device access (udev)
+
+Needs sudo (password required in this env — run yourself). Install
+`/etc/udev/rules.d/99-tp88.rules` (staged at `/tmp/99-tp88.rules`), then:
+`sudo cp /tmp/99-tp88.rules /etc/udev/rules.d/ && sudo udevadm control --reload && sudo udevadm trigger`,
+replug, verify `/dev/usb/lp0` is writable by your user. We write raw bytes to `/dev/usb/lp0`
+(usblp handles the bulk transfer — no need to detach the kernel driver). pyusb to the bulk-OUT
+endpoint of interface 2 is the fallback if usblp misbehaves.
+
+## Important caveat: TP88 is NOT auto-supported upstream
+
+TiMini-Print's README lists `M08F and clones: TP81, TP84, TP85, TP86, TP87, TP88`
+under **"Potential future support"** — i.e. recognized but not implemented. Its BLE
+detection has no `TP88` rule. So cloning gives us the right *family* and pipeline, but
+**the exact TP88 profile (compressed vs raw, width, density, paper/init handshake) is
+what we confirm by experiment.** Closely related, *supported* A4 tattoo models in the
+same `luck_normal_a4` family: TPA46, ITP05/06, DP_A4, APA46Y, A40/A41/A42.
+
+## Decoded protocol (byte-level, from built payloads)
+
+Family `luck_normal_a4`, A4 width **1728 device dots = 216 bytes/line** (`paper`=1600
+usable), 200 dpi. Job layout:
+- **Header / init**: `10 ff 10 00 01  10 ff f1 03 00 …  1f 80 01 10` (Luck-normal wrapper).
+- **Raster**, two encodings:
+  - `luck_normal_raw`: standard ESC/POS **`GS v 0`** → `1d 76 30 00 d8 00 81 00 <data>`
+    (`d8 00` = 216 bytes/line LE; next 16-bit = line count). ~27.9 KB for a 1600×120 page.
+  - `luck_normal_compressed` (tattoo profiles): Luck opcode `1f 10 00 d8 00 81 00 <rle>` —
+    same dims, compresses 27.9 KB → ~2 KB. Preferred for A4 rasters.
+- **Footer / feed+end**: `… 1b 4a 90` (ESC J, feed 0x90 dots) `10 ff f1 45`.
+- Grayscale (`gray4`/`gray8`) supported by the family for shading, not just 1-bit.
+
+## Our code (added to the cloned repo; upstream is Apache-2.0)
+
+- `TiMini-Print/tp88_usblp.py` — `UsblpConnector`/`UsblpConnection`: writes
+  `ProtocolJob.payload` to `/dev/usb/lp0` in profile stream chunks (mirrors
+  `SerialConnection`, minus pyserial termios). One-way pipe (no runtime/notify channel).
+- `TiMini-Print/tp88_print.py` — CLI: build a job from an image/PDF/txt for a chosen
+  profile, then `--dump OUT` (offline, no hardware) and/or `--send` to the printer.
+  `--list-profiles` shows TP88 candidates. Run from the repo dir with `.venv/bin/python`.
+
+Quick checks (offline, verified working):
+```
+cd TiMini-Print
+.venv/bin/python tp88_print.py --list-profiles
+.venv/bin/python tp88_print.py /tmp/tp88_test.png --profile luck_a4_compressed_tattoo --dump /tmp/job.bin
+```
+
+## Device access status (UNRESOLVED — resume here)
+
+The udev rule `/etc/udev/rules.d/99-tp88.rules` is installed and **matches**, but
+`/dev/usb/lp0` still has **no ACL for xecaz** (still root:lp 0660). Diagnosis:
+- `/dev/ttyACM0` DID get `user:xecaz:rw-` via uaccess; `/dev/dri/card0` too. So uaccess
+  works on this seat (seat0, wayland, active).
+- `/dev/usb/lp0` has the `uaccess` tag but the ACL was never applied because our rule is
+  numbered **99** — it adds `TAG+="uaccess"` *after* `73-seat-late.rules` already ran the
+  `uaccess` builtin. CDC-ACM ports are uaccess-tagged by a stock rule (hence ttyACM0
+  worked); the usblp char device is not, so only our too-late rule tags it.
+
+Resume options (in order of preference):
+1. **User is logging out/in** — logind re-applies uaccess ACLs to uaccess-tagged devices
+   on session activation, and lp0 now has the tag, so this may grant access. First check
+   on return: `getfacl /dev/usb/lp0 | grep xecaz` or `[ -w /dev/usb/lp0 ] && echo ok`.
+2. **Persistent correct fix** (staged at `/tmp/72-tp88.rules`): numbered 72 (before
+   seat-late) and grants via the `plugdev` group (xecaz is a member). Install:
+   `sudo cp /tmp/72-tp88.rules /etc/udev/rules.d/ && sudo rm -f /etc/udev/rules.d/99-tp88.rules && sudo udevadm control --reload && sudo udevadm trigger`, then **replug**.
+3. **Immediate, non-persistent**: `sudo setfacl -m u:xecaz:rw /dev/usb/lp0` (instant).
+
+## First test print (once /dev/usb/lp0 is writable)
+
+```
+cd TiMini-Print
+.venv/bin/python tp88_print.py /tmp/tp88_test.png --profile luck_a4_compressed_tattoo --send
+```
+`/tmp/tp88_test.png` is a 1600×120 test strip (border + diagonals + text). If nothing
+prints or output is garbled, try `--profile luck_a40` (raw GS v 0) and other tattoo
+profiles; tune `--blackening 1..5`, `--paper-mode tattoo|plain`. Then write the spec
+(task 6) from what works.
+
+## ✅ CONFIRMED WORKING (2026-05-30)
+
+The TP88 prints correctly via USB with:
+```
+.venv/bin/python tp88_print.py IMAGE.png --profile luck_a40 --paper-mode tattoo --blackening 5 --send
+```
+- Profile **`luck_a40`**, encoding **`luck_normal_raw`** (ESC/POS `GS v 0`), 1728 dots,
+  paper-mode **tattoo**, blackening 5. Test strip printed full-width, correct geometry.
+- The **`luck_normal_compressed`** encoding (`luck_a4_compressed_tattoo*`) fed **blank** —
+  the TP88 firmware does not decode it. **Use raw.**
+- `tp88_print.py` default profile is now `luck_a40`.
+- Full byte-level spec written to `TiMini-Print/docs/tp88-protocol.md`.
+
+Real-image test: `tinytestprint.png` (916×312, project root) printed **excellently** with
+the same config. The render pipeline scales/places automatically; raw `GS v 0` payload
+was 126184 bytes.
+
+Access: **RESOLVED & persistent.** `/etc/udev/rules.d/72-tp88.rules` (plugdev group) is
+installed; `/dev/usb/lp0` comes up `root:plugdev` 0660, writable by xecaz across replugs.
+The old `99-tp88.rules` was removed. (History: the 99 rule's `uaccess` tag applied too
+late — after `73-seat-late.rules` ran the uaccess builtin — so the ACL never landed on
+the usblp node; the 72-prefixed plugdev rule sidesteps uaccess timing entirely.)
+
+## Status
+
+- [x] Clone TiMini-Print + venv + baseline tests pass (383 passed)
+- [x] TP88 mapped to `luck_normal_a4` family; protocol decoded at byte level
+- [x] USB transport adapter (`tp88_usblp.py`) + CLI (`tp88_print.py`)
+- [x] Device access — persistent udev rule `72-tp88.rules` (plugdev), survives replug
+- [x] **First successful print** — raw GS v 0 / tattoo / blackening 5 (test strip)
+- [x] **Real image printed** — `tinytestprint.png`, looked great
+- [x] `docs/tp88-protocol.md` spec written
+- [ ] Future: characterize `/dev/ttyACM0`; grayscale/line-weight tuning for shaded
+      stencils; **Android app** (reuse the spec — USB-OTG bulk or BT SPP, identical bytes)

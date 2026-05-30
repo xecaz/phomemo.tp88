@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Built job dumps / scratch output
+*.bin
+tp88_test.png
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
