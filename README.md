@@ -7,6 +7,10 @@ driven without the paywalled vendor app — and as the basis for a future Androi
 **Status: working.** Real images print correctly over USB. See
 [`docs/tp88-protocol.md`](docs/tp88-protocol.md) for the byte-level protocol.
 
+![The TP88 and one of its first successful prints driven by this repo](first.succesful.prints.jpg)
+
+*The TP88 and one of its first successful prints driven straight from Linux by this repo.*
+
 ## How it works
 
 The TP88 exposes a USB printer-class interface (kernel `usblp` → `/dev/usb/lp0`). Its
