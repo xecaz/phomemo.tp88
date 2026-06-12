@@ -133,8 +133,8 @@ bluetoothctl untrust 9B:03:D7:07:E1:DD      # so BlueZ doesn't hog the advertise
 ```
 
 The tool negotiates the printer's full ATT MTU (512 → 509-byte packets) and paces to a
-target throughput (`--rate-kbps`, default 8) since the printer drops the link if outrun —
-a full A4 page streams in ~42 s.
+target throughput (`--rate-kbps`, default 12 ≈ the print head's sustained rate, since it
+drops/stalls if outrun) — a full A4 page streams in ~29 s.
 
 ## Layout
 

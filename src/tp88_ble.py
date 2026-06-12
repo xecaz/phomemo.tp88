@@ -24,10 +24,11 @@ Notes / findings:
     MTU exchange is triggered; this tool calls `_backend._acquire_mtu()` after connect,
     cutting a 324 KB page from ~16k writes to ~636 (the main speed win).
   * 0xff03 emits 0x0101 after *every* received packet (a reception ack, ~1:1 with writes)
-    plus 0x0107 / 0x02f400 status at start. 0x0101 is NOT a drain credit, so it can't pace
-    a sliding window — the printer overruns and drops the link if you send faster than it
-    prints. So we pace to a target throughput (--rate-kbps); ~8 KB/s reliably completes a
-    full A4 page in ~42 s.
+    plus 0x0107 / 0x02f400 status at start. The printer drops the link (or stalls) if you
+    outrun its print head, so we pace to a target throughput. ~12 KB/s matches the head's
+    sustained drain (acks track 1:1) and completes a full A4 page in ~29 s. Faster bursts
+    briefly (the head has buffer/momentum) then stalls; ack-gating the rate is unreliable
+    because 0x0101 lags behind our own writes under load.
 """
 from __future__ import annotations
 
@@ -66,7 +67,7 @@ async def do_enum(addr: str):
                 print(f"   [char] {ch.uuid}  props={ch.properties}")
 
 
-async def do_send(addr: str, path: str, rate_kbps: float, use_notify: bool):
+async def do_send(addr: str, path: str, rate_kbps: float, use_notify: bool, window: int):
     data = open(path, "rb").read()
 
     dev = await get_device(addr)
@@ -82,8 +83,9 @@ async def do_send(addr: str, path: str, rate_kbps: float, use_notify: bool):
         # Pace to a target throughput so we don't outrun the printer's drain (it has no
         # usable flow-control credit and drops the link on overrun). delay per chunk:
         delay = chunk / (rate_kbps * 1000.0) if rate_kbps else 0.0
+        mode = f"ack-paced (window {window})" if window else f"target {rate_kbps} KB/s"
         print(f"CONNECTED MTU={c.mtu_size} chunk={chunk}B, {len(data)} bytes / {nchunks} "
-              f"chunks, target {rate_kbps} KB/s ({delay*1000:.0f} ms/chunk)", flush=True)
+              f"chunks, {mode}", flush=True)
         ch = c.services.get_characteristic(DATA_CHAR)
         if ch is None:
             raise SystemExit("ff02 data characteristic not found (paired & bonded?)")
@@ -105,7 +107,17 @@ async def do_send(addr: str, path: str, rate_kbps: float, use_notify: bool):
             for n, i in enumerate(range(0, len(data), chunk), 1):
                 await c.write_gatt_char(ch, data[i:i + chunk], response=False)
                 sent += len(data[i:i + chunk])
-                if delay:
+                if window and use_notify:
+                    # ack-paced: stay at most `window` packets ahead of what the head has
+                    # consumed (0101 acks) -> auto-matches the mechanical print rate. The
+                    # window gives buffer headroom to ride the printer's periodic pauses.
+                    waited = 0.0
+                    while (n - acks["n"]) > window:
+                        await asyncio.sleep(0.003)
+                        waited += 0.003
+                        if waited > 30.0:  # patient: head can pause for several seconds
+                            raise RuntimeError(f"ack stall: acks={acks['n']} sent={n}")
+                elif delay:
                     await asyncio.sleep(delay)
                 if n % 100 == 0 or n == nchunks:
                     el = time.monotonic() - t0
@@ -128,16 +140,22 @@ def main():
     sub.add_parser("enum", help="list GATT services/characteristics")
     sp = sub.add_parser("send", help="stream a job (built by tp88_print.py --dump) to ff02")
     sp.add_argument("payload", help="raw job bytes to send")
-    sp.add_argument("--rate-kbps", type=float, default=8.0,
-                    help="target throughput; the printer drops the link if outrun (default 8)")
+    sp.add_argument("--rate-kbps", type=float, default=12.0,
+                    help="target throughput (default 12 ~= the head's sustained drain; "
+                         "completes an A4 page in ~29 s. Higher bursts then stalls.)")
+    sp.add_argument("--window", type=int, default=0,
+                    help="experimental ack-paced mode: stay <=N packets ahead of the head. "
+                         "Bursts fast but the 0101 acks lag under load and stall; prefer "
+                         "fixed --rate-kbps. (default 0 = off)")
     sp.add_argument("--no-notify", action="store_true",
-                    help="do not subscribe to the ff03 ack/status channel")
+                    help="do not subscribe to ff03 (disables ack pacing; uses --rate-kbps)")
     args = ap.parse_args()
 
     if args.cmd == "enum":
         asyncio.run(do_enum(args.addr))
     else:
-        asyncio.run(do_send(args.addr, args.payload, args.rate_kbps, not args.no_notify))
+        asyncio.run(do_send(args.addr, args.payload, args.rate_kbps,
+                            not args.no_notify, args.window))
 
 
 if __name__ == "__main__":

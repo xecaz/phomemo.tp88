@@ -96,18 +96,22 @@ does the exchange lazily — call `await client._backend._acquire_mtu()` right a
 This cuts a 324 KB page from ~16,000 writes to ~636 and is the single biggest speed win.
 `src/tp88_ble.py` does this automatically.
 
-**Pace below the drain rate.** The printer has no usable flow-control credit (see below), so
-it drops the link if you send faster than it prints. `src/tp88_ble.py` paces to a target
-throughput (`--rate-kbps`, default 8). Confirmed streaming a 323,608-byte A4 page:
+**Pace to the head's sustained drain.** The printer has no usable flow-control credit (see
+below), so it drops the link or stalls if you outrun the print head. `src/tp88_ble.py`
+paces to a target throughput (`--rate-kbps`, default **12** ≈ the head's sustained rate).
+Confirmed streaming a 323,608-byte A4 page (MTU 512):
 
-| Config                          | Throughput  | Result                                         |
-|---------------------------------|-------------|------------------------------------------------|
-| MTU 512, ~8 KB/s pacing         | ~7.7 KB/s   | **reliable** — full page, `conn=True`, ~42 s   |
-| MTU 23, 5 ms/chunk              | ~2.4 KB/s   | reliable but slow (~133 s)                      |
-| MTU 23, no pacing / credit win  | ~13.5 KB/s  | overruns, link drops mid-page → corrupted       |
+| Config                  | Throughput  | Result                                                 |
+|-------------------------|-------------|--------------------------------------------------------|
+| **12 KB/s** fixed       | ~11.3 KB/s  | **reliable & fast** — full page in ~29 s, acks 1:1     |
+| 8 KB/s fixed            | ~7.7 KB/s   | reliable but slower (~42 s)                             |
+| 16 KB/s fixed           | "done" 21 s | host buffers ahead of the head → physical print stutters|
+| ack-paced (window N)    | ~21 KB/s    | bursts fast then **stalls** mid-page (see below)        |
+| MTU 23, 5 ms/chunk      | ~2.4 KB/s   | reliable but very slow (~133 s)                         |
 
-`ff03`'s `0x0101` arrives **1:1 with packets we send** (a *reception* ack, not a
-print/drain credit), so a sliding window on it never throttles and still overruns — hence
-fixed-rate pacing rather than credit-based flow control. Pushing `--rate-kbps` higher
-(with the large MTU the link is far less stressed than the small-packet case) is the next
-thing to tune for more speed.
+The head **bursts** above its sustained rate briefly (buffer + momentum) then must throttle,
+so anything much over ~12 KB/s either stutters (fixed) or stalls (ack-paced). `ff03`'s
+`0x0101` is a per-packet **reception** ack and, under heavy write load, arrives *delayed
+behind our own traffic* — so gating the send rate on acks (a sliding window) misreads a
+busy head as a stall and blocks. Fixed-rate pacing at ~12 KB/s is therefore both the
+simplest and the most reliable; it tracks acks 1:1 and finishes a page in ~29 s.

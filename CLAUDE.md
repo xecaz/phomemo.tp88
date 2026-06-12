@@ -191,10 +191,16 @@ Full writeup: `docs/tp88-bluetooth.md`. Key facts:
   BR/EDR → `br-connection-not-supported`), `bluetoothctl pairable on`, a Just-Works agent
   (`bt-agent -c NoInputNoOutput`), then `pair`. Leave **untrusted** so BlueZ doesn't
   auto-reconnect and steal the advertisement. Bond survives printer power-cycle.
-- **Speed:** negotiate MTU 512 via `client._backend._acquire_mtu()` (BlueZ defaults to 23!)
-  → 509-byte packets. `0x0101` notify = per-packet reception ack, NOT a drain credit, so no
-  windowed flow control; pace to a target rate (`--rate-kbps`) under the ~25 KB/s drain.
-  8 KB/s → full page in ~42 s. **Tuning higher rates = open.**
+- **Speed (resolved):** negotiate MTU 512 via `client._backend._acquire_mtu()` (BlueZ
+  defaults to 23!) → 509-byte packets. Pace to a fixed `--rate-kbps` **12** (≈ the head's
+  sustained drain): full A4 page in **~29 s**, acks track 1:1, stable. The head bursts
+  faster briefly then throttles, so >12 either stutters (fixed) or stalls (ack-paced);
+  `0x0101` is a reception ack that lags under load, so ack-gating is unreliable — fixed
+  rate wins.
+- **Android note:** bonding is firmware-enforced (any client must pair once), but the
+  BlueZ-specific hacks (LE-only mode, bt-agent, pairable, untrust) are NOT needed on
+  Android — its BLE stack bonds natively with one tap. The protocol (ff00/ff02/ff03,
+  MTU 512, 12 KB/s) carries over unchanged.
 
 ## Status
 
