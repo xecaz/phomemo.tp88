@@ -18,7 +18,9 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import os
 import sys
+import tempfile
 
 import _bootstrap  # noqa: F401  (puts the TiMini-Print submodule on sys.path)
 from timiniprint.devices import PrinterCatalog
@@ -44,7 +46,27 @@ CANDIDATE_PROFILES = [
 PAPER_MODES = {m.name.lower(): m for m in PaperMode}
 
 
-def build_job(args, catalog):
+def _mirror_to_temp(path):
+    """Return a path to a horizontally-flipped copy of an image input (or (path, None) if
+    the input isn't an image). A horizontal flip of the source equals a flip of the printed
+    page because the render pipeline only scales/centres symmetrically. The vendor driver
+    mirrors tattoo stencils by default (PPD OemMirror=ON) because they go on face-down."""
+    from PIL import Image, ImageOps  # local import: Pillow is a TiMini dep
+    try:
+        img = Image.open(path)
+        img.load()
+    except Exception:
+        print("warning: --mirror applies to image inputs only; printing un-mirrored",
+              file=sys.stderr)
+        return path, None
+    flipped = ImageOps.mirror(img)
+    fd, tmp = tempfile.mkstemp(suffix=".png")
+    os.close(fd)
+    flipped.save(tmp)
+    return tmp, tmp
+
+
+def build_job(args, catalog, mirror):
     device = catalog.device_from_profile(args.profile)
     settings = PrintSettings(
         blackening=args.blackening,
@@ -53,7 +75,12 @@ def build_job(args, catalog):
         dither=not args.no_dither,
         paper_mode=PAPER_MODES.get(args.paper_mode) if args.paper_mode else None,
     )
-    job = PrintJobBuilder(device, settings=settings).build_from_file(args.file)
+    src, tmp = (_mirror_to_temp(args.file) if mirror else (args.file, None))
+    try:
+        job = PrintJobBuilder(device, settings=settings).build_from_file(src)
+    finally:
+        if tmp:
+            os.unlink(tmp)
     return device, job
 
 
@@ -76,6 +103,9 @@ def main(argv=None):
     p.add_argument("--blackening", type=int, default=3, help="darkness 1-5 (default 3)")
     p.add_argument("--feed-padding", type=int, default=12, help="trailing feed dots")
     p.add_argument("--rotate", action="store_true", help="rotate 90° clockwise")
+    p.add_argument("--mirror", action=argparse.BooleanOptionalAction, default=None,
+                   help="horizontally flip the image (tattoo stencils go on face-down); "
+                        "default: on for --paper-mode tattoo, off otherwise")
     p.add_argument("--no-dither", action="store_true", help="threshold instead of dither")
     p.add_argument("--dump", metavar="OUT", help="write payload bytes to file (no printing)")
     p.add_argument("--send", action="store_true", help="send the job to the printer")
@@ -98,10 +128,13 @@ def main(argv=None):
     if not args.dump and not args.send:
         p.error("choose --dump OUT (offline) and/or --send (to printer)")
 
-    device, job = build_job(args, catalog)
+    # Mirror defaults ON for tattoo paper mode (matches the vendor PPD OemMirror=ON).
+    mirror = args.mirror if args.mirror is not None else (args.paper_mode == "tattoo")
+
+    device, job = build_job(args, catalog, mirror)
     print(f"profile={device.profile.profile_key} family={device.protocol_family.value} "
-          f"encoding={device.image_pipeline.encoding.value} payload={len(job.payload)} bytes",
-          file=sys.stderr)
+          f"encoding={device.image_pipeline.encoding.value} mirror={mirror} "
+          f"payload={len(job.payload)} bytes", file=sys.stderr)
 
     if args.dump:
         with open(args.dump, "wb") as fh:

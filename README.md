@@ -107,8 +107,9 @@ sudo udevadm control --reload
 ```
 
 Tuning: `--blackening 1..5` (darkness), `--paper-mode plain|tattoo|tag|black_tag|folder`,
-`--rotate`, `--no-dither`. If a profile fed blank, try `luck_a41_luckp` / `luck_a42_luckp`
-(also raw).
+`--rotate`, `--mirror`/`--no-mirror` (horizontal flip; **on by default for tattoo** stencils,
+which go on face-down — matches the vendor driver), `--no-dither`. If a profile fed blank, try
+`luck_a41_luckp` / `luck_a42_luckp` (also raw).
 
 ### Over Bluetooth LE
 
@@ -139,12 +140,16 @@ drops/stalls if outrun) — a full A4 page streams in ~29 s.
 ## Layout
 
 ```
-src/         our transport + CLI (+ _bootstrap.py path shim)
-docs/        tp88-protocol.md — byte-level protocol spec
+src/         tp88_print.py (USB CLI), tp88_ble.py (BLE), tp88_usblp.py (transport),
+             qy_native.py (native command constants), qy_models.json (146-model registry)
+docs/        tp88-protocol.md (USB + native protocol), tp88-bluetooth.md (BLE),
+             tp88-models.md (model registry + auto-detect)
 udev/        72-tp88.rules — device access rule
-tools/       make_test_strip.py — test image generator
+tools/       make_test_strip.py, make_sierpinski.py — image generators
 examples/    tinytestprint.png — a sample that prints well
+QY_Printer-2.1.0.3/  official QY driver — local protocol reference (gitignored, third-party)
 TiMini-Print/ git submodule (Apache-2.0) — rendering + protocol engine
+TODO.md      future-app backlog (from user reviews)
 CLAUDE.md    working notes / project state
 ```
 

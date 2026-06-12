@@ -73,6 +73,24 @@ same `luck_normal_a4` family: TPA46, ITP05/06, DP_A4, APA46Y, A40/A41/A42.
 
 ## Decoded protocol (byte-level, from built payloads)
 
+> **⚠️ Verified against the official driver (2026-06-12).** The official QY Linux driver is
+> a local reference at `QY_Printer-2.1.0.3/` (gitignored; `c/rastertoM08F.cxx` + 75 PPDs).
+> Cross-check results — see **`docs/tp88-protocol.md`** (authoritative native protocol),
+> **`docs/tp88-models.md`** + **`src/qy_models.json`** (146-model registry + auto-detect),
+> **`src/qy_native.py`** (native command constants):
+> - The `10 ff …` wrapper + `1b 4a 90` feed footer below are the **TiMini `luck_normal`
+>   dialect we emit** — the firmware accepts it, but it is **not** the native protocol. Native
+>   = `1F 11 xx` control cmds (density `1F 11 02`, compression-off `1F 11 35 00`, antiwrinkle
+>   `1F 11 88`, status `1F 11 09/07/11/12`) + `GS v 0`, **no `10 ff` wrapper, no feed footer**.
+> - The `1f 10 00` "compressed, preferred for A4" claim below is **WRONG** — that opcode does
+>   not exist; real compression is **LZO1X via `1F 11 35 01`** (other models only; TP88 uses
+>   raw, confirmed: compressed fed blank).
+> - **Mirror gotcha:** tattoo PPDs default `OemMirror=ON`; the vendor flips stencils
+>   horizontally (applied face-down). Our output is un-mirrored → flipped vs vendor. Fixed via
+>   `tp88_print.py --mirror` (default on for tattoo).
+> - `ttyACM0` has **no print role** — the driver reads status in-band over the usblp
+>   back-channel. USB `MDL:` field = authoritative model id for auto-detect.
+
 Family `luck_normal_a4`, A4 width **1728 device dots = 216 bytes/line** (`paper`=1600
 usable), 200 dpi. Job layout:
 - **Header / init**: `10 ff 10 00 01  10 ff f1 03 00 …  1f 80 01 10` (Luck-normal wrapper).
@@ -211,7 +229,13 @@ Full writeup: `docs/tp88-bluetooth.md`. Key facts:
 - [x] **First successful print** — raw GS v 0 / tattoo / blackening 5 (test strip)
 - [x] **Real image printed** — `tinytestprint.png`, looked great
 - [x] `docs/tp88-protocol.md` spec written
-- [~] **Sierpiński full-page test** — `tools/make_sierpinski.py` written; line-art /
-      equilateral / depth-8 / 2 px sent. **REVISIT: confirm on-paper detail floor.**
-- [ ] Future: characterize `/dev/ttyACM0`; grayscale/line-weight tuning for shaded
-      stencils; **Android app** (reuse the spec — USB-OTG bulk or BT SPP, identical bytes)
+- [x] **BLE printing** — bonded, MTU 512, ~12 KB/s; `src/tp88_ble.py` (`docs/tp88-bluetooth.md`)
+- [x] **Verified vs official driver** (`QY_Printer-2.1.0.3/`) — native protocol documented,
+      `1f 10 00` claim corrected, mirror gotcha found; `src/qy_native.py` constants
+- [x] **Model registry + auto-detect** — `src/qy_models.json` (146 models, 3 families),
+      `docs/tp88-models.md`
+- [x] **App backlog** — `TODO.md` (from Google reviews; Project/scale-lock concept)
+- [~] **Sierpiński full-page test** — `tools/make_sierpinski.py` written. **REVISIT detail floor.**
+- [~] **Mirror fix** — `tp88_print.py --mirror` (default on for tattoo); confirm on paper.
+- [ ] Future: native-protocol sender (`qy_native.py`); grayscale/line-weight tuning;
+      **Android app** (reuse spec — BLE GATT ff00/ff02/ff03 or USB-OTG bulk, identical bytes)

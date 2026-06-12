@@ -8,6 +8,12 @@ venv/
 # Built job dumps / scratch output
 *.bin
 tp88_test.png
+android/
+
+# Local references — not redistributed: official QY driver (59 MB, third-party binaries)
+# and the raw Google-review dumps used to write TODO.md.
+QY_Printer-2.1.0.3/
+*star.txt
 
 # Editor / OS
 .vscode/

@@ -74,18 +74,24 @@ the connection. `src/tp88_ble.py` also falls back to connecting by raw address.
 
 Once bonded:
 
-1. Connect over LE.
+1. Connect over LE; negotiate MTU 512 (see below) → 509-byte writes.
 2. Subscribe to `ff03` notifications (the printer immediately emits `0x0107` then
-   `0x02f400` status, then a stream of `0x0101`).
-3. Write the job bytes to `ff02` with **write-without-response**, in **20-byte chunks**
-   (ATT MTU is 23), **paced ~5 ms/chunk**.
-4. The trailing `1b 4a 90` feed + `10 ff f1 45` end (same as USB) triggers the print.
+   `0x02f400` status, then a stream of `0x0101` per-packet reception acks).
+3. Write the job bytes to `ff02` with **write-without-response**, paced to **~12 KB/s**
+   (the head's drain rate — faster stalls; see Throughput).
+4. The job's terminating bytes (the luck_normal `1b 4a 90`+`10 ff f1 45` footer, or, for a
+   native job, the final raster block) trigger the print.
+
+The **same byte dialects as USB** apply over BLE: `ff02` carries either the TiMini
+`luck_normal` job we send today or a future native-QY job; the native status queries map to
+the `ff03` notify channel (= the USB back-channel). See
+[`tp88-protocol.md`](tp88-protocol.md) and [`../src/qy_native.py`](../src/qy_native.py).
 
 ```bash
 # build the job (identical bytes to USB), then stream it over BLE:
 .venv/bin/python src/tp88_print.py IMAGE.png --profile luck_a40 \
     --paper-mode tattoo --blackening 5 --dump job.bin
-.venv/bin/python src/tp88_ble.py send job.bin          # ~5 ms pacing (default)
+.venv/bin/python src/tp88_ble.py send job.bin          # MTU 512, ~12 KB/s (defaults)
 ```
 
 ## Throughput, MTU, and flow control

@@ -1,0 +1,3037 @@
+{
+  "_source": "QY_Printer-2.1.0.3 (official QY/Phomemo Linux CUPS driver)",
+  "_note": "page_bytes_per_line is derived from the PPD page width x dpi (what the official driver declares). The physical A4 head is 216 mm = 1728 dots = 216 B/line, so the m08f A4 models accept up to 216 B/line; we send 216 and it prints fine.",
+  "families": {
+    "m08f": "ESC/POS GS v 0 raster (A4 photo/tattoo). Native control cmds = qy_native.py.",
+    "labelmxxx": "ESC/POS label printers (narrow), density 1-15, cut/gap/black-mark.",
+    "d480": "Receipt printers (narrow)."
+  },
+  "models": [
+    {
+      "model": "D480BT",
+      "cupsModelNumber": 480,
+      "filter": "rastertoD480",
+      "family": "d480",
+      "dpi": 180,
+      "default_page": "18x100mm",
+      "page_w_pt": 51,
+      "page_dots": 128,
+      "page_bytes_per_line": 16,
+      "page_sizes": {
+        "18x100mm": [
+          51,
+          283
+        ],
+        "12x100mm": [
+          34,
+          283
+        ],
+        "9x100mm": [
+          25,
+          283
+        ],
+        "6x100mm": [
+          17,
+          283
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": false,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "P780",
+      "cupsModelNumber": 780,
+      "filter": "rastertoD480",
+      "family": "d480",
+      "dpi": 180,
+      "default_page": "18x100mm",
+      "page_w_pt": 51,
+      "page_dots": 128,
+      "page_bytes_per_line": 16,
+      "page_sizes": {
+        "24x100mm": [
+          68,
+          283
+        ],
+        "18x100mm": [
+          51,
+          283
+        ],
+        "12x100mm": [
+          34,
+          283
+        ],
+        "9x100mm": [
+          25,
+          283
+        ],
+        "6x100mm": [
+          17,
+          283
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": false,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "D50",
+      "cupsModelNumber": 50,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 180,
+      "default_page": "w20h50",
+      "page_w_pt": 56,
+      "page_dots": 140,
+      "page_bytes_per_line": 18,
+      "page_sizes": {
+        "w20h50": [
+          56,
+          141
+        ],
+        "w20h40": [
+          56,
+          113
+        ],
+        "w20h60": [
+          56,
+          170
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "E6000",
+      "cupsModelNumber": 6200,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 300,
+      "default_page": "w136h85",
+      "page_w_pt": 136,
+      "page_dots": 567,
+      "page_bytes_per_line": 71,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M100",
+      "cupsModelNumber": 6100,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None",
+        "RedBlack"
+      ]
+    },
+    {
+      "model": "M102",
+      "cupsModelNumber": 6108,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w40h30",
+      "page_w_pt": 113,
+      "page_dots": 319,
+      "page_bytes_per_line": 40,
+      "page_sizes": {
+        "w40h30": [
+          113,
+          85
+        ],
+        "w50h80": [
+          136,
+          226
+        ],
+        "w50h30": [
+          136,
+          85
+        ],
+        "w50h50": [
+          136,
+          141
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M105",
+      "cupsModelNumber": 6108,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w40h30",
+      "page_w_pt": 113,
+      "page_dots": 319,
+      "page_bytes_per_line": 40,
+      "page_sizes": {
+        "w40h30": [
+          113,
+          85
+        ],
+        "w50h80": [
+          136,
+          226
+        ],
+        "w50h30": [
+          136,
+          85
+        ],
+        "w50h50": [
+          136,
+          141
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M107",
+      "cupsModelNumber": 6201,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M108",
+      "cupsModelNumber": 6108,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w40h30",
+      "page_w_pt": 113,
+      "page_dots": 319,
+      "page_bytes_per_line": 40,
+      "page_sizes": {
+        "w40h30": [
+          113,
+          85
+        ],
+        "w50h80": [
+          136,
+          226
+        ],
+        "w50h30": [
+          136,
+          85
+        ],
+        "w50h50": [
+          136,
+          141
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M109",
+      "cupsModelNumber": 6201,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M110",
+      "cupsModelNumber": 6201,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M110S",
+      "cupsModelNumber": 6201,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M120",
+      "cupsModelNumber": 6201,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M150",
+      "cupsModelNumber": 6100,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None",
+        "RedBlack"
+      ]
+    },
+    {
+      "model": "M200",
+      "cupsModelNumber": 6202,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w204h595",
+      "page_w_pt": 204,
+      "page_dots": 575,
+      "page_bytes_per_line": 72,
+      "page_sizes": {
+        "w204h595": [
+          204,
+          595
+        ],
+        "w204h842": [
+          204,
+          842
+        ],
+        "w204h9286": [
+          204,
+          9286
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M208",
+      "cupsModelNumber": 6202,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M209",
+      "cupsModelNumber": 6202,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M219",
+      "cupsModelNumber": 6202,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M220",
+      "cupsModelNumber": 6202,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w136h198",
+      "page_w_pt": 136,
+      "page_dots": 383,
+      "page_bytes_per_line": 48,
+      "page_sizes": {
+        "w136h85": [
+          136,
+          85
+        ],
+        "w136h198": [
+          136,
+          198
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M221",
+      "cupsModelNumber": 6221,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w40h30",
+      "page_w_pt": 113,
+      "page_dots": 319,
+      "page_bytes_per_line": 40,
+      "page_sizes": {
+        "w40h30": [
+          113,
+          85
+        ],
+        "w50h80": [
+          136,
+          226
+        ],
+        "w50h30": [
+          136,
+          85
+        ],
+        "w50h50": [
+          136,
+          141
+        ],
+        "w70h80": [
+          198,
+          226
+        ]
+      },
+      "darkness_levels": [],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M250",
+      "cupsModelNumber": 6221,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w40h30",
+      "page_w_pt": 113,
+      "page_dots": 319,
+      "page_bytes_per_line": 40,
+      "page_sizes": {
+        "w40h30": [
+          113,
+          85
+        ],
+        "w50h80": [
+          136,
+          226
+        ],
+        "w50h30": [
+          136,
+          85
+        ],
+        "w50h50": [
+          136,
+          141
+        ],
+        "w70h80": [
+          198,
+          226
+        ]
+      },
+      "darkness_levels": [
+        2,
+        6,
+        13
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M260",
+      "cupsModelNumber": 6221,
+      "filter": "rastertolabelmxxx",
+      "family": "labelmxxx",
+      "dpi": 203,
+      "default_page": "w40h30",
+      "page_w_pt": 113,
+      "page_dots": 319,
+      "page_bytes_per_line": 40,
+      "page_sizes": {
+        "w40h30": [
+          113,
+          85
+        ],
+        "w50h80": [
+          136,
+          226
+        ],
+        "w50h30": [
+          136,
+          85
+        ],
+        "w50h50": [
+          136,
+          141
+        ],
+        "w70h80": [
+          198,
+          226
+        ]
+      },
+      "darkness_levels": [
+        2,
+        6,
+        13
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "A281M",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "A282M",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "A285M",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "A28U",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "A886",
+      "cupsModelNumber": 848086,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          842
+        ],
+        "Tattoo-letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "A887",
+      "cupsModelNumber": 848086,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          842
+        ],
+        "Tattoo-letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "B821",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "G100",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        1
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "G100Pro",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        1
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "H831",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "H832",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "H833",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M04S",
+      "cupsModelNumber": 400,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "w136h85",
+      "page_w_pt": null,
+      "page_dots": null,
+      "page_bytes_per_line": null,
+      "page_sizes": {
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M08 pro",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "M08_A4",
+      "page_w_pt": 601,
+      "page_dots": 1694,
+      "page_bytes_per_line": 212,
+      "page_sizes": {
+        "M08_A4": [
+          601,
+          850
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M08E",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M08E-WS",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          843
+        ],
+        "Tattoo-letter": [
+          612,
+          793
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M08F",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "NL_W100_2_H100/100*100mm*2(WF):\"<<": [
+          595,
+          442
+        ],
+        "NL_W200_H200": [
+          595,
+          584
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M08F-WS",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          843
+        ],
+        "Tattoo-letter": [
+          612,
+          793
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M08FS",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M831",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M832",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M832D",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M833",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M834",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M835",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "M836",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "P831",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A4_Label": [
+          595,
+          841
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "B5JIS": [
+          516,
+          729
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "Letter_Lable": [
+          612,
+          791
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "P831Max",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "B5JIS": [
+          516,
+          729
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "P832",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "B5JIS": [
+          516,
+          729
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "P832Max",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "B5JIS": [
+          516,
+          729
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "P833",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "B5JIS": [
+          516,
+          729
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ],
+        "Letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "PR20",
+      "cupsModelNumber": 77832,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "w110h146": [
+          312,
+          414
+        ],
+        "w80h106": [
+          226,
+          300
+        ],
+        "w53h70": [
+          150,
+          198
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "Q300",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "Q301",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "Q301Pro",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "Q302",
+      "cupsModelNumber": 302,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "S821",
+      "cupsModelNumber": 22,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5_Lanspace": [
+          595,
+          420
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "S821K",
+      "cupsModelNumber": 22,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5_Lanspace": [
+          595,
+          420
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "S821X",
+      "cupsModelNumber": 22,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5_Lanspace": [
+          595,
+          420
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "S822",
+      "cupsModelNumber": 23,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "S823",
+      "cupsModelNumber": 23,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "SP20",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          843
+        ],
+        "Tattoo-letter": [
+          612,
+          793
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "T08A",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "T08FS",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          843
+        ],
+        "Tattoo-letter": [
+          612,
+          793
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "T831",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 300,
+      "default_page": "A4",
+      "page_w_pt": 595,
+      "page_dots": 2479,
+      "page_bytes_per_line": 310,
+      "page_sizes": {
+        "A4": [
+          595,
+          842
+        ],
+        "A5": [
+          420,
+          595
+        ],
+        "B5JIS": [
+          516,
+          729
+        ],
+        "EnvISOB5": [
+          499,
+          709
+        ],
+        "Letter": [
+          612,
+          792
+        ],
+        "NL_W100_2_H100/100*100mm*2(WF):\"<<": [
+          595,
+          442
+        ],
+        "NL_W200_H200": [
+          595,
+          584
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "antiwrinkle_levels": [],
+      "mirror_default_on": null,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP81",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          843
+        ],
+        "Tattoo-letter": [
+          612,
+          793
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP82",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          843
+        ],
+        "Tattoo-letter": [
+          612,
+          793
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP83",
+      "cupsModelNumber": 21,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          843
+        ],
+        "Tattoo-letter": [
+          612,
+          793
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP84",
+      "cupsModelNumber": 848086,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          842
+        ],
+        "Tattoo-letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP85",
+      "cupsModelNumber": 831,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          842
+        ],
+        "Tattoo-letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP86",
+      "cupsModelNumber": 848086,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          842
+        ],
+        "Tattoo-letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP87",
+      "cupsModelNumber": 848086,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          842
+        ],
+        "Tattoo-letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    },
+    {
+      "model": "TP88",
+      "cupsModelNumber": 848086,
+      "filter": "rastertoM08F",
+      "family": "m08f",
+      "dpi": 203,
+      "default_page": "Tattoo-A4",
+      "page_w_pt": 595,
+      "page_dots": 1678,
+      "page_bytes_per_line": 210,
+      "page_sizes": {
+        "Tattoo-A4": [
+          595,
+          842
+        ],
+        "Tattoo-letter": [
+          612,
+          792
+        ]
+      },
+      "darkness_levels": [
+        0,
+        1,
+        2
+      ],
+      "antiwrinkle_levels": [
+        0,
+        1,
+        2
+      ],
+      "mirror_default_on": true,
+      "color_options": [
+        "GrayScale",
+        "None"
+      ]
+    }
+  ],
+  "installer_model_list": [
+    "M102",
+    "M105",
+    "M107",
+    "M108",
+    "M109",
+    "M110",
+    "M110S",
+    "M120",
+    "M100",
+    "M150",
+    "M200",
+    "M208",
+    "M209",
+    "M219",
+    "M220",
+    "M221",
+    "E6000",
+    "M04S",
+    "D50",
+    "M08F",
+    "T08FS",
+    "P831",
+    "T831",
+    "M08 pro",
+    "P832",
+    "P833",
+    "P831 MAX",
+    "SP20",
+    "T08F",
+    "TP81",
+    "M08FS",
+    "G831",
+    "G832",
+    "G833",
+    "TP83",
+    "S821",
+    "S821K",
+    "S821X",
+    "S822",
+    "S823",
+    "Q300",
+    "Q301",
+    "Q302",
+    "R831",
+    "D480BT",
+    "P780",
+    "D680BT",
+    "A30",
+    "P24",
+    "D480BT PRO",
+    "M831",
+    "M832",
+    "M833",
+    "M834",
+    "M835",
+    "M836",
+    "AM-X1",
+    "AM-X2",
+    "TP82",
+    "T08A",
+    "P832Max",
+    "P580",
+    "P834",
+    "H831",
+    "H832",
+    "H833",
+    "M08E",
+    "M08F-WS",
+    "Q500",
+    "P780BT PRO",
+    "M250",
+    "M260",
+    "M08E-WS",
+    "M400",
+    "M430",
+    "G100",
+    "T08FS-BG",
+    "TP85",
+    "P15",
+    "TP86",
+    "TP87",
+    "TP88",
+    "B-006F",
+    "P832Pro",
+    "M420",
+    "M421",
+    "AM-X3",
+    "OZERX",
+    "E9000",
+    "QT-800",
+    "Q301Pro",
+    "PR20",
+    "portable printer",
+    "P980BT",
+    "E9000",
+    "E9000Pro",
+    "G100Pro",
+    "AM-R2",
+    "AM-R2-BT",
+    "TP84",
+    "A886",
+    "A887",
+    "E50Pro",
+    "B821",
+    "PR20Lite",
+    "A281M",
+    "A282M",
+    "A285M",
+    "M08D",
+    "A88U",
+    "E50",
+    "AM-X5",
+    "A285M",
+    "AM-G1",
+    "OUO-T08FS",
+    "M832D",
+    "PR20 Lite",
+    "M220A",
+    "M160",
+    "A28U",
+    "M08ES",
+    "M108TA",
+    "M320",
+    "M321",
+    "A42",
+    "A43",
+    "T08FS-WS",
+    "TP81D",
+    "M821",
+    "M832T",
+    "A281U",
+    "A881U",
+    "A282U",
+    "M110SA",
+    "M836T",
+    "M08F Pro",
+    "A284",
+    "M122",
+    "M834T",
+    "TA81",
+    "B821-Q648",
+    "M08F-WS-Q629",
+    "A88U-Q684",
+    "T08FD",
+    "A285M-Q672",
+    "A28U-Q647"
+  ],
+  "installer_models_without_ppd": [
+    "A281U",
+    "A282U",
+    "A284",
+    "A285M-Q672",
+    "A28U-Q647",
+    "A30",
+    "A42",
+    "A43",
+    "A881U",
+    "A88U",
+    "A88U-Q684",
+    "AM-G1",
+    "AM-R2",
+    "AM-R2-BT",
+    "AM-X1",
+    "AM-X2",
+    "AM-X3",
+    "AM-X5",
+    "B-006F",
+    "B821-Q648",
+    "D480BT PRO",
+    "D680BT",
+    "E50",
+    "E50Pro",
+    "E9000",
+    "E9000",
+    "E9000Pro",
+    "G831",
+    "G832",
+    "G833",
+    "M08D",
+    "M08ES",
+    "M08F Pro",
+    "M08F-WS-Q629",
+    "M108TA",
+    "M110SA",
+    "M122",
+    "M160",
+    "M220A",
+    "M320",
+    "M321",
+    "M400",
+    "M420",
+    "M421",
+    "M430",
+    "M821",
+    "M832T",
+    "M834T",
+    "M836T",
+    "OUO-T08FS",
+    "OZERX",
+    "P15",
+    "P24",
+    "P580",
+    "P780BT PRO",
+    "P831 MAX",
+    "P832Pro",
+    "P834",
+    "P980BT",
+    "PR20 Lite",
+    "PR20Lite",
+    "Q500",
+    "QT-800",
+    "R831",
+    "T08F",
+    "T08FD",
+    "T08FS-BG",
+    "T08FS-WS",
+    "TA81",
+    "TP81D",
+    "portable printer"
+  ]
+}
