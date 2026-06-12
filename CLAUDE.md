@@ -154,6 +154,48 @@ The old `99-tp88.rules` was removed. (History: the 99 rule's `uaccess` tag appli
 late — after `73-seat-late.rules` ran the uaccess builtin — so the ACL never landed on
 the usblp node; the 72-prefixed plugdev rule sidesteps uaccess timing entirely.)
 
+## Sierpiński full-page test (2026-05-31) — REVISIT SOON
+
+A "future app idea" probe: render a Sierpiński gasket at native device resolution and
+print it. Generator added: **`tools/make_sierpinski.py`** (run with the venv). Outputs a
+1-bit PNG at device pixels (no resampling); print via the confirmed path
+(`luck_a40` / tattoo / blackening 5 / `--no-dither`).
+
+Key flags: `--equilateral` (true 60° triangle, `height = base·√3/2`, centered),
+`--depth N`, `--line-width W` (default 2), `--fill` (solid triangles, old look).
+Default canvas 1600×2338 (usable width × A4 height @ 200 dpi).
+
+Lessons learned (all confirmed visually from generated PNGs; **print quality TBD on return**):
+- **Aspect**: a page-*filling* triangle (base 1600, height 2338) is stretched ~1.69× and
+  looks wrong. Use `--equilateral` for correct proportions (span 1591×1379).
+- **Lines, not fills**: solid-filled triangles merge fine sub-structure into chunky blobs.
+  Draw outlines (default now) with `--line-width 2`. Filled mode wastes ink on a stencil.
+- **The depth ↔ line-width ↔ 200 dpi floor**: with 2 px lines the smallest triangle must
+  stay big enough to keep a white gap. depth 8 → ~6.2 px leaf edge = practical limit for
+  2 px. Deeper (depth 9, ~3 px) needs `--line-width 1`. `--depth 7` (~12 px) is the safe
+  fallback if the innermost triangles fill in on paper.
+- Last sent: `/tmp/sierpinski_lines.png` (equilateral, depth 8, lw 2), payload 323 KB.
+
+**Open question to revisit**: did the depth-8 / 2 px print keep the smallest triangles
+crisp, or did the innermost ones fill in? That answer sets the real detail floor for the
+Android app's render path.
+
+## ✅ BLUETOOTH CONFIRMED WORKING (2026-06-12)
+
+Full A4 raster printed over **BLE GATT** — same job bytes as USB. Tool: `src/tp88_ble.py`.
+Full writeup: `docs/tp88-bluetooth.md`. Key facts:
+- Print path is **BLE** (not the advertised Classic SPP/HCRP): service `0xff00`, write char
+  `0xff02` (write-without-response), notify `0xff03`.
+- **Bonding is mandatory** — unbonded links are dropped after ~1 s (this is the "won't
+  pair/print" symptom). Fix: `ControllerMode = le` in main.conf (BlueZ otherwise tries
+  BR/EDR → `br-connection-not-supported`), `bluetoothctl pairable on`, a Just-Works agent
+  (`bt-agent -c NoInputNoOutput`), then `pair`. Leave **untrusted** so BlueZ doesn't
+  auto-reconnect and steal the advertisement. Bond survives printer power-cycle.
+- **Speed:** negotiate MTU 512 via `client._backend._acquire_mtu()` (BlueZ defaults to 23!)
+  → 509-byte packets. `0x0101` notify = per-packet reception ack, NOT a drain credit, so no
+  windowed flow control; pace to a target rate (`--rate-kbps`) under the ~25 KB/s drain.
+  8 KB/s → full page in ~42 s. **Tuning higher rates = open.**
+
 ## Status
 
 - [x] Clone TiMini-Print + venv + baseline tests pass (383 passed)
@@ -163,5 +205,7 @@ the usblp node; the 72-prefixed plugdev rule sidesteps uaccess timing entirely.)
 - [x] **First successful print** — raw GS v 0 / tattoo / blackening 5 (test strip)
 - [x] **Real image printed** — `tinytestprint.png`, looked great
 - [x] `docs/tp88-protocol.md` spec written
+- [~] **Sierpiński full-page test** — `tools/make_sierpinski.py` written; line-art /
+      equilateral / depth-8 / 2 px sent. **REVISIT: confirm on-paper detail floor.**
 - [ ] Future: characterize `/dev/ttyACM0`; grayscale/line-weight tuning for shaded
       stencils; **Android app** (reuse the spec — USB-OTG bulk or BT SPP, identical bytes)

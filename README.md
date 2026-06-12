@@ -4,8 +4,10 @@ Reverse-engineering and a working Linux driver for the **QUIN / Phomemo TP88** t
 tattoo-stencil printer (an M08F-class A4 unit, 203 dpi, 1728-dot head), so it can be
 driven without the paywalled vendor app — and as the basis for a future Android app.
 
-**Status: working.** Real images print correctly over USB. See
-[`docs/tp88-protocol.md`](docs/tp88-protocol.md) for the byte-level protocol.
+**Status: working over USB _and_ Bluetooth LE.** Real images print correctly both ways.
+See [`docs/tp88-protocol.md`](docs/tp88-protocol.md) for the byte-level protocol and
+[`docs/tp88-bluetooth.md`](docs/tp88-bluetooth.md) for the BLE transport (pairing, GATT,
+flow control).
 
 ![The TP88 and one of its first successful prints driven by this repo](first.succesful.prints.jpg)
 
@@ -22,7 +24,9 @@ rendering and job building, and adds:
 - [`src/tp88_usblp.py`](src/tp88_usblp.py) — a USB printer-class transport that writes a
   `ProtocolJob` to `/dev/usb/lp0` (TiMini-Print itself only ships Bluetooth/serial).
 - [`src/tp88_print.py`](src/tp88_print.py) — a CLI: render an image/PDF/text and dump the
-  bytes or send them to the printer.
+  bytes or send them to the printer over USB.
+- [`src/tp88_ble.py`](src/tp88_ble.py) — a Bluetooth-LE transport (bleak): stream the same
+  job bytes to the printer's GATT data characteristic.
 
 TiMini-Print lists the TP88 only under "potential future support", so the exact profile
 was confirmed by experiment: **`luck_a40`** (raw `GS v 0`) prints; the compressed tattoo
@@ -47,8 +51,13 @@ encoding fed blank paper.
 - **Job shape:** Luck-normal header → one or more `1d 76 30 00 <bytes/line LE> <lines LE>`
   raster blocks → `1b 4a 90` feed + `10 ff f1 45` end. Full detail in
   [`docs/tp88-protocol.md`](docs/tp88-protocol.md).
-- **Transport-agnostic:** these are the same bytes the vendor app would send over
-  Bluetooth SPP, so the spec maps directly to a future Android app (USB-OTG bulk or BT).
+- **Transport-agnostic:** the exact same job bytes drive the printer over **USB** and over
+  **Bluetooth LE** (confirmed on hardware), so the spec maps directly to a future Android
+  app (USB-OTG bulk or BLE GATT).
+- **Bluetooth is BLE, not SPP:** despite advertising Classic SPP/HCRP UUIDs, the print path
+  is the BLE GATT service `0xff00` (write char `0xff02`, notify `0xff03`). The printer
+  **requires LE bonding** — an unbonded link is dropped after ~1 s, which is the real cause
+  of "it won't pair / won't print". See [`docs/tp88-bluetooth.md`](docs/tp88-bluetooth.md).
 
 ## What TiMini-Print provides vs. what we added
 
@@ -100,6 +109,32 @@ sudo udevadm control --reload
 Tuning: `--blackening 1..5` (darkness), `--paper-mode plain|tattoo|tag|black_tag|folder`,
 `--rotate`, `--no-dither`. If a profile fed blank, try `luck_a41_luckp` / `luck_a42_luckp`
 (also raw).
+
+### Over Bluetooth LE
+
+The same job bytes can be streamed over BLE. **Pair once** (the printer requires bonding —
+see [`docs/tp88-bluetooth.md`](docs/tp88-bluetooth.md) for the full why/how), then send:
+
+```bash
+# one-time: force LE-only, enable a Just-Works agent, and bond
+sudo sed -i 's/^#*\s*ControllerMode.*/ControllerMode = le/' /etc/bluetooth/main.conf
+sudo systemctl restart bluetooth
+bluetoothctl pairable on
+bt-agent -c NoInputNoOutput &
+bluetoothctl --timeout 8 scan le            # discover "TP88"
+bluetoothctl pair 9B:03:D7:07:E1:DD         # -> Bonded: yes
+bluetoothctl untrust 9B:03:D7:07:E1:DD      # so BlueZ doesn't hog the advertisement
+
+# then, any time: build a job and stream it
+.venv/bin/python src/tp88_print.py examples/tinytestprint.png --profile luck_a40 \
+    --paper-mode tattoo --blackening 5 --dump job.bin
+.venv/bin/python src/tp88_ble.py send job.bin
+.venv/bin/python src/tp88_ble.py enum        # inspect the GATT services
+```
+
+The tool negotiates the printer's full ATT MTU (512 → 509-byte packets) and paces to a
+target throughput (`--rate-kbps`, default 8) since the printer drops the link if outrun —
+a full A4 page streams in ~42 s.
 
 ## Layout
 
