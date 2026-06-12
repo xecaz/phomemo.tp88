@@ -16,7 +16,23 @@ flow control).
 > (`android/`, kept local in this repo); the reverse-engineering findings below are what
 > it's built on.
 
-![The TP88 and one of its first successful prints driven by this repo](first.succesful.prints.jpg)
+![FREEmemo — tattoo stencil printer app](gfx/freememo.png)
+
+The app now covers a full stencil workflow:
+
+- **Customers → projects → canvas** at the real-world scale of the piece, with multi-image
+  layout (drag/scale/anchor/lock, semi-transparent overlap, auto-extending canvas).
+- **Stencil prep** per image: photo, threshold, or Sobel **edge-detection** outlines with a
+  contrast slider and line thickness; horizontal/vertical **flip**; save a processed copy.
+- **Text objects**: bundled + user-added fonts (auto-indexed), preview, bold/italic, alignment,
+  size, letter/line spacing, and **arch** (curved) text.
+- **Drop shadow** on any object (image or text) — angle/distance/density, stippled for the 1-bit
+  head so it follows the artwork's lines.
+- **Tiled BLE printing**: pick the area, choose where it lands on the A4 sheet (to reuse half-used
+  pages), set darkness and mirror, and stream to the TP88. Big pieces tile across A4 pages at a
+  locked scale.
+
+![The TP88 and one of its first successful prints driven by this repo](gfx/first.succesful.prints.jpg)
 
 *The TP88 and one of its first successful prints driven straight from Linux by this repo.*
 
