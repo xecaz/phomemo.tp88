@@ -237,5 +237,9 @@ Full writeup: `docs/tp88-bluetooth.md`. Key facts:
 - [x] **App backlog** — `TODO.md` (from Google reviews; Project/scale-lock concept)
 - [~] **Sierpiński full-page test** — `tools/make_sierpinski.py` written. **REVISIT detail floor.**
 - [~] **Mirror fix** — `tp88_print.py --mirror` (default on for tattoo); confirm on paper.
+- [x] **Android app (FREEmemo)** — built and **printing over BLE on hardware** (Kotlin/Compose;
+      customers→projects→canvas→stencil prep→tiled BLE print). Own repo at `android/` (private,
+      `github.com/xecaz/FREEmemo`); reuses this spec — BLE GATT `ff00/ff02/ff03`, MTU 512,
+      `GS v 0` 1-bit raster, mirror, ~12 KB/s.
 - [ ] Future: native-protocol sender (`qy_native.py`); grayscale/line-weight tuning;
-      **Android app** (reuse spec — BLE GATT ff00/ff02/ff03 or USB-OTG bulk, identical bytes)
+      characterize `/dev/ttyACM0`.

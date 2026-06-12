@@ -2,12 +2,19 @@
 
 Reverse-engineering and a working Linux driver for the **QUIN / Phomemo TP88** thermal
 tattoo-stencil printer (an M08F-class A4 unit, 203 dpi, 1728-dot head), so it can be
-driven without the paywalled vendor app — and as the basis for a future Android app.
+driven without the paywalled vendor app — and the protocol basis for the **FREEmemo**
+Android app.
 
 **Status: working over USB _and_ Bluetooth LE.** Real images print correctly both ways.
 See [`docs/tp88-protocol.md`](docs/tp88-protocol.md) for the byte-level protocol and
 [`docs/tp88-bluetooth.md`](docs/tp88-bluetooth.md) for the BLE transport (pairing, GATT,
 flow control).
+
+> **The FREEmemo Android app is built and printing over BLE.** A free, offline,
+> no-subscription companion (customers → projects → real-world canvas → stencil prep →
+> tiled BLE printing) using the protocol decoded here. It lives in its own repo
+> (`android/`, kept local in this repo); the reverse-engineering findings below are what
+> it's built on.
 
 ![The TP88 and one of its first successful prints driven by this repo](first.succesful.prints.jpg)
 
