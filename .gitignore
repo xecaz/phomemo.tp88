@@ -20,3 +20,12 @@ QY_Printer-2.1.0.3/
 .idea/
 *.swp
 .DS_Store
+
+# Signing keys / secrets — NEVER commit (this is a public repo)
+*.jks
+*.keystore
+freememo-upload.jks
+key.properties
+keystore.properties
+*.p12
+*.pepk
