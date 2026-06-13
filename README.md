@@ -25,12 +25,22 @@ The app now covers a full stencil workflow:
 - **Stencil prep** per image: photo, threshold, or Sobel **edge-detection** outlines with a
   contrast slider and line thickness; horizontal/vertical **flip**; save a processed copy.
 - **Text objects**: bundled + user-added fonts (auto-indexed), preview, bold/italic, alignment,
-  size, letter/line spacing, and **arch** (curved) text.
-- **Drop shadow** on any object (image or text) — angle/distance/density, stippled for the 1-bit
-  head so it follows the artwork's lines.
+  size, letter/line spacing, **arch** (curved) text, and **hollow** (white fill / black outline)
+  lettering.
+- **Background generator**: procedural 1-bit backgrounds — fractals (Mandelbrot/Julia/Newton/
+  Sierpinski/Fern), mandalas, tilings (checkerboard, grids, hexagons, Truchet), Voronoi / low-poly
+  / maze, curves (spirograph, rose, sunflower, ripples), recursive line fractals (Koch / Hilbert /
+  dragon / Apollonian), and a wireframe **wormhole** — all with free orientation; baked as a normal
+  image so every effect applies.
+- **Drop shadow** and **white cutout** (sticker-style knockout) on any object; overlapping art
+  merges. A **layers panel** (canvas on top, draggable list, tap-to-edit) reaches stacked objects;
+  the cutout always composites last.
 - **Tiled BLE printing**: pick the area, choose where it lands on the A4 sheet (to reuse half-used
   pages), set darkness and mirror, and stream to the TP88. Big pieces tile across A4 pages at a
   locked scale.
+- **Backup & restore**: one offline `.freememo` file (customers, projects, images, fonts, settings)
+  to share or save to Downloads, and "open with" to restore on a new phone — no cloud (Android Auto
+  Backup is disabled).
 
 ![The TP88 and one of its first successful prints driven by this repo](gfx/first.succesful.prints.jpg)
 

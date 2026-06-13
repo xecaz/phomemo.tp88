@@ -240,10 +240,15 @@ Full writeup: `docs/tp88-bluetooth.md`. Key facts:
 - [x] **Android app (FREEmemo)** — built and **printing over BLE on hardware** (Kotlin/Compose;
       customers→projects→canvas→stencil prep→tiled BLE print). Own repo at `android/` (private,
       `github.com/xecaz/FREEmemo`); reuses this spec — BLE GATT `ff00/ff02/ff03`, MTU 512,
-      `GS v 0` 1-bit raster, mirror, ~12 KB/s. Now also: **text objects** (bundled+user fonts,
-      arch, bold/italic, spacing), **per-object drop shadow** (angle/distance/density, ink-stippled),
-      **position-on-paper** (place a print anywhere on the A4 sheet — full-width raster + corner
+      `GS v 0` 1-bit raster, mirror, ~12 KB/s. Covers: **text objects** (bundled+user fonts,
+      arch, bold/italic, spacing, **hollow** outlined lettering), **per-object drop shadow** +
+      **white cutout** (knockout, composites last), **layers panel** (drag-reorder, bottom-sheet
+      edit), a **background generator** (fractals, mandala, tilings, Voronoi/maze, curves, line
+      fractals, wormhole — free orientation), **position-on-paper** (full-width raster + corner
       anchor dots beat the firmware's ink-bbox auto-centering; X flipped for the head's reversed
-      axis), **invert toggle**, **image flip** (H/V) in the prepare dialog, and selectable darkness.
+      axis), **invert toggle**, **image flip** (H/V), selectable darkness, global cm/inch units, and
+      offline **backup/restore** (`.freememo`; `allowBackup=false`, no cloud). App display name is
+      now **FREEmemo**. Version held at 1.1.0 pending the next Play submission; an artist
+      feedback/line-weight tuning pass is next.
 - [ ] Future: native-protocol sender (`qy_native.py`); grayscale/line-weight tuning;
       characterize `/dev/ttyACM0`.
